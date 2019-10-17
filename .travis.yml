@@ -1,0 +1,29 @@
+sudo: required
+service: 
+  - docker
+
+# test again thats why build with  Dockerfile.dev
+before_install:
+  - docker build -t kgr/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kgr/react-test npm test
+
+after_sucess:
+  - docker build -t kgr/multi-client ./client
+  - docker build -t kgr/multi-nginx ./nginx
+  - docker build -t kgr/multi-server ./server
+  - docker build -t kgr/multi-worker ./worker
+  # login into docker cli 
+  # (travis ci / project / more options / settings / env variables)
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # upload images to docker hub
+  - docker push kgr/multi-client
+  - docker push kgr/multi-nginx
+  - docker push kgr/multi-server
+  - docker push kgr/multi-worker
+
+
+
+ 
+
