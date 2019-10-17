@@ -9,7 +9,7 @@ before_install:
 script:
   - docker run -e CI=true kgr/react-test npm test
 
-after_sucess:
+after_success:
   - docker build -t kgr/multi-client ./client
   - docker build -t kgr/multi-nginx ./nginx
   - docker build -t kgr/multi-server ./server
