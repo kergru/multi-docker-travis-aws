@@ -24,7 +24,7 @@ after_success:
   - docker push kgrdocker/multi-worker
 
 deploy:
-  provider: beanstalk
+  provider: elasticbeanstalk
   region: us-east-2
   app: multi-docker
   env: MultiDocker-env
